@@ -8,8 +8,6 @@
   - [ ] Graphics and UI
   - [ ] Sound-design
 
----
-
 - ## desciption
 
   - A camera-tracked game about wild west shootout between two cowboys.
@@ -30,23 +28,15 @@
   - If you all choose gun, the fastest cowboy will win _(the other, unfortunatley loose 1 out of 3 hearts)_. If you all choose to protect - nothing will happen and the second round will begin.
     As you may notice you have 3 hearts (❤️❤️❤️). Loose all = loose a game.
 
----
-
 - ## installation
-  1. Download an `subo-pistols` archive by pressing `code` button, then `download ZIP`.
+  1. Download a `subo-pistols` archive by pressing `code` button, then `download ZIP`.
   2. Unpack the archive in the folder
   3. Open terminal in this folder and type `pip install -r requirements.txt` _(yeah you need python and pip)_
   4. Run the `main.p`y` file
   5. Enjoy playing! 🌟
 
----
-
 - ## use
   ...
 
----
-
 - ## examples
   ...
-
----
