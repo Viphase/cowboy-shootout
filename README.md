@@ -15,9 +15,7 @@
 
   - A camera-tracked game about wild west shootout between two cowboys.
 
-  <video width="320" height="240" controls>
-    <source src="./ui/video.mp4" type="preview">
-  </video>
+  [![Cowboy-Shootout](ui/image.png)](./ui/video.mp4)
 
   > You play against your opponent standing in front of you. When the second will say "SHOOT!" you should decide between two options:
   >
