@@ -33,10 +33,10 @@ def is_pistol(hand, shape) -> bool:
             and v10 - v9 > 0)
 
 def is_shield(hands, shape) -> bool:
-    if hands is None or not hands.hand_landmarks:
+    if hands is None:
         return False
 
-    lm = hands.hand_landmarks[0]
+    lm = hands
     points = []
 
     for mark in lm:
@@ -48,4 +48,5 @@ def is_shield(hands, shape) -> bool:
 
     ws = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** .5
     _, r = minEnclosingCircle(points)
-    return (2 * r / ws) > 1.6
+    return (2 * r / ws) < 1.6
+

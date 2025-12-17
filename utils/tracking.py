@@ -3,8 +3,10 @@ from mediapipe.tasks import python as mp
 from mediapipe import Image, ImageFormat
 from cv2 import line, circle, cvtColor, resize, COLOR_RGB2BGR, COLOR_BGR2RGB
 from numpy import fliplr, hstack
-from utils.geometry import Segment, Line
+from utils.line import Segment, Ray, Point
 
+SCREEN_WIDTH = 640
+SCREEN_HEIGHT = 320
 
 class MediaPipeFacade:
     def __init__(self):
@@ -35,10 +37,9 @@ class MediaPipeFacade:
         )
 
 
-    def process_frame(self, frame, frame_number, debug: bool = False):
+    def process_frame(self, frame, debug: bool = False):
 
-        img = fliplr(frame)
-        img = cvtColor(img, COLOR_BGR2RGB)
+        img = cvtColor(frame, COLOR_BGR2RGB)
         img = resize(img, (640, 360))
 
 
@@ -65,26 +66,43 @@ class MediaPipeFacade:
                 print(f"В левой части поля должен находится только один человек")
             if n < 1:
                 print("Игрок должен встать в левую часть поля")
-        # img = debugf(img, first_half.shape, results_hands_first.append(results_hands_second), results_pose_first.append(results_pose_second))
+        img = debugf(img, first_half.shape, results_hands_first, results_pose_first, results_hands_second,results_pose_second)
         return img, (results_hands_first,results_hands_second), (results_pose_first, results_pose_second)
 
-# def debugf(img, half_image_shape, results_hands, results_pose):
-#     if results_hands.hand_landmarks:
-#         for hand in results_hands.hand_landmarks[:4]:
-#             for lm in hand:
-#                 px = int(lm.x * half_image_shape[1])
-#                 py = int(lm.y * half_image_shape[0])
-#                 circle(img, (px, py), 3, (255, 0, 0), -1)
+def debugf(img,half_image_shape,hands_left,pose_left,hands_right,pose_right):
+    h, w, _ = half_image_shape
+    x_offset = w  
 
-#     if results_pose.pose_landmarks:
-#         for pose in results_pose.pose_landmarks[:2]:
-#             for lm in pose:
-#                 px = int(lm.x * half_image_shape[1])
-#                 py = int(lm.y * half_image_shape[0])
-#                 circle(img, (px, py), 3, (0, 255, 0), -1)
+    if hands_left and hands_left.hand_landmarks:
+        for hand in hands_left.hand_landmarks[:4]:
+            for lm in hand:
+                px = int(lm.x * w)
+                py = int(lm.y * h)
+                circle(img, (px, py), 3, (255, 0, 0), -1)
 
-#         line(img, (pose.collider.A.x, pose.collider.A.y), (pose.collider.B.x, pose.collider.B.y), (255,255,0), 2)
-#     return cvtColor(img, COLOR_RGB2BGR)
+    if pose_left and pose_left.pose_landmarks:
+        for pose in pose_left.pose_landmarks[:2]:
+            for lm in pose:
+                px = int(lm.x * w)
+                py = int(lm.y * h)
+                circle(img, (px, py), 3, (0, 255, 0), -1)
+
+    if hands_right and hands_right.hand_landmarks:
+        for hand in hands_right.hand_landmarks[:4]:
+            for lm in hand:
+                px = int(lm.x * w) + x_offset
+                py = int(lm.y * h)
+                circle(img, (px, py), 3, (255, 0, 0), -1)
+
+    if pose_right and pose_right.pose_landmarks:
+        for pose in pose_right.pose_landmarks[:2]:
+            for lm in pose:
+                px = int(lm.x * w) + x_offset
+                py = int(lm.y * h)
+                circle(img, (px, py), 3, (0, 255, 0), -1)
+
+    return cvtColor(img, COLOR_RGB2BGR)
+
 
 class Human:
     def __init__(self, hands_results, pose_results, img_shape):
@@ -103,7 +121,7 @@ class Human:
         if hands_results is not None:
             for i, hand in enumerate(hands_results.hand_landmarks):
                 hand_type = hands_results.handedness[i][0].category_name
-                if hand_type == "Right":
+                if hand_type == "Left":
                     self._left_hand = hand
         else:
             self._left_hand = None
@@ -117,7 +135,7 @@ class Human:
         if hands_results is not None:
             for i, hand in enumerate(hands_results.hand_landmarks):
                 hand_type = hands_results.handedness[i][0].category_name
-                if hand_type == "Left":
+                if hand_type == "Right":
                     self._right_hand = hand
         else:
             self._right_hand = None
@@ -134,23 +152,16 @@ class Human:
         knees_x = int((k1.x + k2.x) * 0.5 * self.img_shape[1])
         knees_y = int((k1.y + k2.y) * 0.5 * self.img_shape[0])
 
-        return Segment(head_x, head_y, knees_x, knees_y)
+        return Segment((head_x, head_y), (knees_x, knees_y))
     
     @property
     def bullet(self):
-        if self.left_hand:
-            elbow = self.pose[13]
+        if self.pose is not None:
+            try:
+                start = (self.pose[14].x * SCREEN_WIDTH, self.pose[14].y * SCREEN_HEIGHT)
+                end = (self.pose[16].x * SCREEN_WIDTH, self.pose[16].y * SCREEN_HEIGHT)
+                return Ray(start=start, point=end)
+            except:
+                print("неправильное положение в кадре")
         else:
-            elbow = self.pose[14]
-
-        if self.left_hand:
-            hand = self.pose[15]
-        else:
-            hand = self.pose[16]
-
-        self.elbow_x = int(elbow.x * self.img_shape[1])
-        self.elbow_y = int(elbow.y * self.img_shape[0])
-        self.hand_x = int(hand.x * self.img_shape[1])
-        self.hand_y = int(hand.y * self.img_shape[0])
-
-        return Line(self.elbow_x, self.elbow_y, self.hand_x, self.hand_y)
+            print("Неправильное положение в кадре.")
