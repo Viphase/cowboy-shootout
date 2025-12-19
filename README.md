@@ -4,7 +4,7 @@
 
   - **`In development 🛠️`**
   - [x] Gun gesture tracking
-  - [ ] Two body detection - 14.12
+  - [x] Two body detection - 14.12
   - [ ] Bullet shot - 16.12
   - [ ] Body segments - 17.12
   - [ ] Game logic - 18.12
@@ -31,16 +31,14 @@
   - If you all choose gun, the fastest cowboy will win _(the other, unfortunatley loose 1 out of 3 hearts)_. If you all choose to protect - nothing will happen and the second round will begin.
     As you may notice you have 3 hearts (❤️❤️❤️). Loose all = loose a game.
 
-- ## installation
+- ## installation & use
 
-  1. Download a `subo-pistols` archive by pressing `code` button, then [`download ZIP`](https://github.com/Viphase/subo-pistols/archive/refs/heads/main.zip).
-  2. Unpack the archive in the folder
-  3. Open terminal in this folder and type `pip install -r requirements.txt` _(yeah you need python and pip)_
-  4. Run the `main.p`y` file
+  0. You need to have `Python` and `pip` installed
+  1. Open terminal and run `git clone https://github.com/Viphase/cowboy-shootout.git && cd cowboy-shootout`
+  2. Initialize venv `python -m venv .venv && source .venv/bin/activate`
+  3. Install requirements using this command `pip install -r requirements.txt`
+  4. Run main.py using `python main.py`
   5. Enjoy playing! 🌟
-
-- ## use
-  ...
 
 - ## examples
   ...
