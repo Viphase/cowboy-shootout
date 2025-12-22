@@ -4,7 +4,7 @@ from game_tracking import *
 from ui import UI_EVENTS, UIController
 
 GAME = {
-    "state": "menu",#menu, instruction, check, countdown, round
+    "state": "menu",#menu, ask_rules, rules, check, countdown, round
     "countdown": 3,
     "error": None
 }
@@ -72,19 +72,36 @@ def main():
         # ------------ game logic -------------
 
         if GAME["state"] == "menu":
+            ui.show_menu()
 
             if UI_EVENTS["start"]:
                 UI_EVENTS["start"] = False
-                GAME["state"] = "instruction"
+                GAME["state"] = "ask_rules"
 
-        elif GAME["state"] == "instruction":
+            elif UI_EVENTS["open_rules"]:
+                UI_EVENTS["open_rules"] = False
+                GAME["state"] = "rules"
 
-            if UI_EVENTS["instruction_yes"] or UI_EVENTS["instruction_no"]:
+        elif GAME["state"] == "ask_rules":
+            ui.show_ask_rules()
+
+            if UI_EVENTS["instruction_yes"]:
                 UI_EVENTS["instruction_yes"] = False
+                GAME["state"] = "rules"
+
+            if UI_EVENTS["instruction_no"]:
                 UI_EVENTS["instruction_no"] = False
                 GAME["state"] = "check"
 
+        elif GAME["state"] == "rules":
+            ui.show_rules()
+
+            if UI_EVENTS["continue_game"]:
+                UI_EVENTS["continue_game"] = False
+                GAME["state"] = "check"
+
         elif GAME["state"] == "check":
+            ui.show_game()
             GAME["error"] = check_players(first_player, second_player)
 
             if GAME["error"] is None:
@@ -97,8 +114,7 @@ def main():
             if GAME["error"] is not None:
                 GAME["state"] = "check"
             else:
-                putText(frame, str(GAME["countdown"]), (frame.shape[1] // 2 - 30, frame.shape[0] // 2), 
-                    FONT_HERSHEY_SIMPLEX, 4, (255, 255, 255), 6)
+                ui.show_countdown(GAME["countdown"])
 
                 if frame_number % 30 == 0:
                     GAME["countdown"] -= 1
@@ -107,6 +123,7 @@ def main():
                     GAME["state"] = "round"
 
         elif GAME["state"] == "round":
+            ui.show_game()
             round(first_player, second_player)
             GAME["state"] = "result"
             GAME["result_timer"] = 90
@@ -118,13 +135,9 @@ def main():
             if GAME["result_timer"] <= 0:
                 GAME["state"] = "menu"
 
-        if GAME["error"]:
-            putText(frame, GAME["error"], (50, frame.shape[0] - 40),
-                FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 3)
-
         debugf(frame, first_player, second_player)
-        ui.show_error(GAME["error"])
         ui.draw_frame(frame)
+        ui.show_error(GAME["error"])
 
 if __name__ == "__main__":
     main()
