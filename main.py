@@ -11,6 +11,7 @@ GAME = {
     "reaction_time": 5,
     "error": None,
 }
+
 ui = UIController()
 
 def check_players(first, second):
@@ -45,16 +46,15 @@ def round(first_player, second_player, shape):
         second_player.state = "Nothing"
 
     if first_player.state == "Gun" and second_player.state != 'Gun':
-        result = first_player.shoot(second_player)
+        result = "FIRST:" + first_player.shoot(second_player)
     elif first_player.state != "Gun" and second_player.state == "Gun":
-        result = second_player.shoot(first_player)
+        result = "SECOND:" + second_player.shoot(first_player)
     elif first_player.state == "Gun" and second_player.state == 'Gun':
-        result = first_player.shoot(second_player) + "\n" + second_player.shoot(first_player)
+        result = "FIRST" + first_player.shoot(second_player) + "\n" + "SECOND:" + second_player.shoot(first_player)
     else:
         result = "No shot"
     
     return result
-
 
 def main():
     cap = VideoCapture(0)

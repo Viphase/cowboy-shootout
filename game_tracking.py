@@ -214,25 +214,25 @@ class Human:
 
         if cross_ray_segment(self.bullet, enemy.collider[0]):
             if enemy.safe['head']:
-                return 'Second defended'
+                return 'enemy defended'
             else:
                 enemy.hp -= 1.5
-                return 'First headshot'
+                return 'headshot'
             
         elif cross_ray_segment(self.bullet, enemy.collider[1]):
             if enemy.safe['body']:
-                return 'Second defended'
+                return 'enemy defended'
             else:
                 enemy.hp -= 1
-                return 'First bodyshot'
+                return 'bodyshot'
             
         elif cross_ray_segment(self.bullet, enemy.collider[2]):
             if enemy.safe['legs']:
-                return 'Second defended'
+                return 'enemy defended'
             else:
                 enemy.hp -= .5
-                return 'First legshot'
+                return 'legshot'
         else:
-            return 'First missed'
+            return 'missed'
 
 
