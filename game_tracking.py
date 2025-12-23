@@ -181,11 +181,11 @@ class Human:
     def bullet(self):
         try:
             start = (
-                self.pose[14].x *  self.image_shape[1],
-                self.pose[14].y *  self.image_shape[0])
+                self.pose[14].x *  self.img_shape[1],
+                self.pose[14].y *  self.img_shape[0])
             end = (
-                self.pose[16].x *  self.image_shape[1],
-                self.pose[16].y *  self.image_shape[0])
+                self.pose[16].x *  self.img_shape[1],
+                self.pose[16].y *  self.img_shape[0])
             
             return Ray(start=start, point=end)
         except:
@@ -193,8 +193,7 @@ class Human:
 
     @property
     def shield(self):
-        x = self.pose[16].x *  self.image_shape[1]
-        y = self.pose[16].y *  self.image_shape[0]
+        y = self.pose[16].y *  self.img_shape[0]
         
         segments = self.collider
         
