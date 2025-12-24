@@ -2,7 +2,7 @@
 
 - ## status:
 
-  - **`In development 🛠️`**
+  - **`Done ✅`**
   - [x] Gun gesture tracking
   - [x] Two body detection - 14.12
   - [x] Bullet shot - 16.12
@@ -35,10 +35,14 @@
 
   0. You need to have `Python` and `pip` installed
   1. Open terminal and run `git clone https://github.com/Viphase/cowboy-shootout.git && cd cowboy-shootout`
-  2. Initialize venv `python -m venv .venv && source .venv/bin/activate`
+  2. Initialize venv (MacOS) - `python -m venv .venv && source .venv/bin/activate`
+    2.1 (Windows) - `python -m venv .venv && .\.venv\Scripts\activate`
   3. Install requirements using this command `pip install -r requirements.txt`
   4. Run main.py using `python main.py`
   5. Enjoy playing! 🌟
 
 - ## examples
-  ...
+  * Example 1:
+  [![Example 1](ui/exmpl1.png)]
+  * Example 2:
+  [![Example](ui/exmpl2.png)]
