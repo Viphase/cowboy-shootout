@@ -77,7 +77,7 @@ def main():
             break
 
         if frame_number % 1 == 0:
-            frame, hands_results, pose_results = mp_facade.process_frame(frame, debug=False)
+            frame, hands_results, pose_results = mp_facade.process_frame(frame, debug=True)
         frame_number += 1
 
         split = split_players(pose_results, hands_results, frame.shape)
@@ -155,7 +155,7 @@ def main():
                     GAME["countdown"] -= 1
                     countdown_time = current_time
 
-                if GAME["countdown"] <= 0:
+                if GAME["countdown"] < 0:
                     GAME["state"] = "round"
                     reaction_time = time.time()
 
@@ -163,11 +163,11 @@ def main():
             ui.show_game()
             ui.update_hp(int(first_player.hp), int(second_player.hp))
             current_time = time.time()
-            if current_time - reaction_time >= 2:
+            if current_time - reaction_time >= 1.5:
                 result = round(first_player, second_player, frame.shape)
                 GAME["round_result"] = result
                 GAME["state"] = "result"
-                GAME["result_timer"] = 60
+                GAME["result_timer"] = 40
 
         elif GAME["state"] == "result":
             ui.show_game()
@@ -187,9 +187,9 @@ def main():
             ui.show_game()
 
             if first_player.hp > second_player.hp:
-                text = "ЛЕВЫЙ ИГРОК ПОБЕДИЛ!"
-            elif second_player.hp > first_player.hp:
                 text = "ПРАВЫЙ ИГРОК ПОБЕДИЛ!"
+            elif second_player.hp > first_player.hp:
+                text = "ВТОРОЙ ИГРОК ПОБЕДИЛ!"
             else:
                 text = "НИЧЬЯ"
 

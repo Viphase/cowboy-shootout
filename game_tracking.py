@@ -130,10 +130,7 @@ class Human:
 
     @property
     def in_ready_pos(self):
-        return (
-            self.pose is not None and
-            len(self.pose) >= 26
-        )
+        return (self.pose is not None and len(self.pose) >= 26 and self.right_hand is not None and self.left_hand is not None)
 
     @property
     def left_hand(self):
@@ -235,7 +232,7 @@ class Human:
             if enemy.safe['head']:
                 return 'враг защитился'
             else:
-                enemy.hp -= 1.5
+                enemy.hp -= 2
                 return 'выстрел в голову'
             
         elif cross_ray_segment(self.bullet, enemy.collider[1]):
@@ -249,7 +246,7 @@ class Human:
             if enemy.safe['legs']:
                 return 'враг защитился'
             else:
-                enemy.hp -= .5
+                enemy.hp -= 1
                 return 'выстрел в ноги'
         else:
             return 'промах'

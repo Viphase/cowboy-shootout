@@ -171,8 +171,8 @@ class GameMenu(QWidget):
         self.game_widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.game_widget.setStyleSheet("""
             QLabel {
-                font-size: 150px;
-                color: red;
+                font-size: 60px;
+                color: black;
                 background: rgba(0,0,0,0);
                 padding: 20px;
                 border-radius: 15px;
@@ -239,7 +239,6 @@ class GameMenu(QWidget):
         self._set_background(bg)
         super().resizeEvent(event)
 
-    # Добавить метод для установки состояния
     def set_state(self, state):
         self._current_state = state
         self.update_background()
@@ -365,11 +364,12 @@ class UIController:
             self.window.game_widget.setText(str(text))
             self.window.game_widget.setStyleSheet("""
                 QLabel {
-                    font-size: 160px;
-                    color: red;
+                    font-size: 100px;
+                    color: black;
                     background: rgba(0,0,0,0);
                     padding: 30px;
                     border-radius: 20px;
+                    qproperty-alignment: 'AlignTop | AlignHCenter';
                 }
             """)
             self.window.game_widget.show()
@@ -392,7 +392,7 @@ class UIController:
         self.window.game_widget.setText(text)
         self.window.game_widget.setStyleSheet("""
             QLabel {
-                font-size: 70px;
+                font-size: 130px;
                 color: white;
                 background: rgba(0,0,0,180);
                 padding: 40px;
